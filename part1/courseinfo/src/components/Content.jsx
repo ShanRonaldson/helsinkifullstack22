@@ -1,9 +1,11 @@
 import { Part } from "./Part"
 
-export const Content = (props) => (
-    <div>
-        <Part part={props.part1} exercise={props.exercise1} />
-        <Part part={props.part2} exercise={props.exercise2} />
-        <Part part={props.part3} exercise={props.exercise3} />
-    </div>
-)
+export const Content = (props) => {
+    return (
+        <div>
+            <Part part={props.part1} />
+            <Part part={props.part2} />
+            <Part part={props.part3} />
+        </div>
+    )
+}

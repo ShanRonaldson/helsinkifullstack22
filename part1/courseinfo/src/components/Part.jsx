@@ -1,3 +1,5 @@
-export const Part = (props) => (
-    <p>{props.part} {props.exercise}</p>
-)
+export const Part = (props) => {
+    return (
+        <p>{props.part.name} {props.part.exercises}</p>
+    )
+}
