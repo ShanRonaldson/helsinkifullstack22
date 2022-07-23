@@ -8,9 +8,9 @@ export const Content = (props) => {
 
     return (
         <div>
-            {parts.map(part => {
+            {parts.map((part, index) => {
                 return (
-                    <Part name={part.name} exercises={part.exercises} />
+                    <Part key={index} name={part.name} exercises={part.exercises} />
                 )
             })}
         </div>
