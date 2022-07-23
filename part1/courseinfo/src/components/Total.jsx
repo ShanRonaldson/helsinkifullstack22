@@ -1,6 +1,12 @@
 export const Total = (props) => {
 
-    const total = props.part1.exercises + props.part2.exercises + props.part3.exercises;
+    const parts = props.parts;
+
+    let total = 0;
+
+    parts.map(part =>
+        total += part.exercises
+    )
 
     return (
         <p>
