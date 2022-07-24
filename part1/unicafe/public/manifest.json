@@ -1,6 +1,6 @@
 {
-  "short_name": "Anecdotes",
-  "name": "Create React App anecdotes project for Helsinki full stack",
+  "short_name": "Unicafe",
+  "name": "Create React App Unicafe project for Helsinki full stack",
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
