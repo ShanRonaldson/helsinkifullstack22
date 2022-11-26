@@ -38,8 +38,6 @@ export const Content = ({
                   <li key={key}> {`${lang[1]}`} </li>
                 ))}
               </ul>
-              {/*               <h4>Languages: </h4> <p>{countryToShow.languages}</p>
-               */}{" "}
               <img
                 className="flag-image"
                 src={countryToShow.flags.svg}

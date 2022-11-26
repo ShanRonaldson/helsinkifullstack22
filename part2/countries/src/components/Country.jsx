@@ -1,3 +1,5 @@
+import { Weather } from "./Weather";
+
 export const Country = ({ country }) => {
   let languages = {};
   country.map((lang) => (languages = lang.languages));
@@ -25,6 +27,10 @@ export const Country = ({ country }) => {
               className="flag-image"
               src={info.flags.svg}
               alt={info.name.common + `'s flag`}
+            />
+            <Weather
+              countryName={info.name.common}
+              countryCapital={info.capital}
             />
           </div>
         );
