@@ -14,17 +14,11 @@ export const create = newData => {
 
 export const update = (id, newData) => {
     const request = axios.put(`${serverUrl}/${id}`, newData);
-    request.then(response => { alert('Updated!') }).catch(error => {
-        alert('An error occurred, please try again!')
-        console.log(error)
-    })
+    return request.then(response => response.data)
 
 }
 
 export const remove = (id) => {
     const request = axios.delete(`${serverUrl}/${id}`)
-    request.then(response => { alert('Deleted!') }).catch(error => {
-        alert('An error occurred, please try again!')
-        console.log(error)
-    })
+    return request.then(response => response.data)
 }
