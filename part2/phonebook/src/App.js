@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { getAll, create, update, remove } from './services/server';
 import { Add } from './components/Add';
 import { Header } from './components/Header'
 import { List } from './components/List';
@@ -10,9 +10,9 @@ export const App = () => {
   const [persons, setPersons] = useState([])
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => setPersons(response.data))
+    getAll().then(data => {
+      setPersons(data)
+    })
   }, [])
 
   const [newName, setNewName] = useState({ name: '', number: '' });
@@ -24,14 +24,20 @@ export const App = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    persons.map(person => {
-      if (newName.name === person.name) {
-        alert(`${newName.name} is already added to the phonebook`);
-        return true;
-      } else {
-        setPersons(persons.concat(newName));
+    const search = persons.some(person => person.name.toLowerCase() === newName.name.toLowerCase())
+
+    if (search) {
+      const toChange = persons.filter(person => person.name.toLowerCase() === newName.name.toLowerCase())
+      if (window.confirm(`${newName.name} is already in the database. Do you want to change their number?`)) {
+        update(toChange[0].id, newName)
+        getAll().then(data => {
+          setPersons(data)
+        });
       }
-    });
+    } else if (!search) {
+      create(newName).then(data => { setPersons(persons.concat(data)); })
+    }
+
     setNewName({ name: '', number: '' })
   }
 
@@ -50,6 +56,18 @@ export const App = () => {
 
   }
 
+  const handleDelete = (id) => {
+    const toDelete = persons.filter((person) => person.id === id)
+
+    if (window.confirm(`Are you sure you want to delete ${toDelete[0].name} ?`)) {
+      remove(id);
+      getAll().then(data => {
+        setPersons(data)
+      });
+    }
+  }
+
+
   return (
     <>
       <Header text={'Phonebook'} />
@@ -58,7 +76,7 @@ export const App = () => {
 
       <Search handleSearch={handleSearch} filter={filteredPersons} />
 
-      <List persons={persons} />
+      <List persons={persons} handleDelete={handleDelete} />
     </>
   )
 }
