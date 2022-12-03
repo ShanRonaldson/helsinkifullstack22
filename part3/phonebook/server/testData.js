@@ -1,4 +1,4 @@
-const data = [
+let data = [
     {
         "id": 1,
         "name": "Arto Hellas",
@@ -20,3 +20,5 @@ const data = [
         "number": "39-23-6423122"
     }
 ]
+
+module.exports = { data }
