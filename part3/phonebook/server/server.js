@@ -1,18 +1,22 @@
+require('dotenv').config();
 const express = require("express");
-const morgan = require("morgan");
+/* const morgan = require("morgan"); */
 const cors = require("cors");
+const Person = require('./models/person')
+
 
 const app = express();
 
+
 app.use(express.json());
 app.use(cors());
-morgan.token("body", (req, res) => JSON.stringify(req.body));
+/* morgan.token("body", (req, res) => JSON.stringify(req.body));
 app.use(
     morgan(
         ":method :url :status :res[content-length] :response-time ms - :body - :req[content-length]"
     )
-);
-
+); */
+/* 
 let data = [
     {
         "id": 1,
@@ -35,7 +39,7 @@ let data = [
         "number": "39-23-6423122"
     }
 ]
-
+ */
 //get front page
 app.get("/", (req, res) => {
     res.send("<h1>Hello World!</h1>");
@@ -44,22 +48,28 @@ app.get("/", (req, res) => {
 //get info page
 app.get("/info", (request, response) => {
     const date = new Date();
-    const body = `Phonebook has data for ${data.length} persons
-  ${date}`;
-    response.writeHead(200, {
-        "Content-type": "text/javascript",
-    });
-    response.write(body);
-    response.end();
+    Person.find({}).then(people => {
+        response.writeHead(200, {
+            "Content-type": "text/javascript",
+        })
+        const body = `Phonebook has data for ${people.length} persons
+        ${date}`;
+        response.write(body);
+        response.end();
+    })
+
+
 });
 
 // get all data
 app.get("/api/persons", (request, response) => {
-    response.json(data);
+    Person.find({}).then(people => {
+        response.json(people)
+    })
 });
 
 // get one person
-app.get("/api/persons/:id", (request, response) => {
+/* app.get("/api/persons/:id", (request, response) => {
     const id = Number(request.params.id);
     const person = data.find((item) => item.id === id);
 
@@ -68,15 +78,15 @@ app.get("/api/persons/:id", (request, response) => {
     } else {
         response.status(404).end();
     }
-});
-
+}); */
+/* 
 createId = (arr) => {
     const max = arr.length > 0 ? Math.max(...arr.map((n) => n.id)) : 0;
 
     return max + 1;
-};
+}; */
 // add a person
-app.post("/api/persons", (request, response) => {
+/* app.post("/api/persons", (request, response) => {
     const body = request.body;
 
     if (!body.name || !body.number) {
@@ -110,15 +120,15 @@ app.post("/api/persons", (request, response) => {
             response.send(true);
         }
     }
-});
+}); */
 
 // delete a person
-app.delete("/api/persons/:id", (request, response) => {
+/* app.delete("/api/persons/:id", (request, response) => {
     const id = Number(request.params.id);
     data = data.filter((person) => person.id !== id);
 
     response.status(204).end();
-});
+}); */
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
