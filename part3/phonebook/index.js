@@ -1,7 +1,11 @@
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 
 app.use(express.json())
+
+morgan.token('body', (req, res) => JSON.stringify(req.body))
+app.use(morgan(':method :url :status :res[content-length] :response-time ms - :body - :req[content-length]'));
 
 let data = [
   {
@@ -93,6 +97,7 @@ app.post('/api/persons', (request, response) => {
       number: body.number
     }
     const search = data.some(info => info.name.toLowerCase() === person.name.toLowerCase())
+
     if (search) {
       return response.status(409).json({
         error: `${person.name} exists already`
