@@ -2,7 +2,7 @@
   "name": "twilight-sun-3433",
   "version": "1.0.0",
   "description": "part 3 phonebook",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",

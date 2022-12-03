@@ -4,7 +4,6 @@ const express = require("express");
 const cors = require("cors");
 const Person = require('./models/person')
 
-
 const app = express();
 
 app.use(express.static('build'))
@@ -41,6 +40,7 @@ let data = [
     }
 ]
   */
+
 //get front page
 app.get("/", (req, res) => {
     res.send("<h1>Hello World!</h1>");
@@ -70,24 +70,20 @@ app.get("/api/persons", (request, response) => {
 });
 
 // get one person
-/* app.get("/api/persons/:id", (request, response) => {
-    const id = Number(request.params.id);
-    const person = data.find((item) => item.id === id);
-
-    if (person) {
-        response.json(person);
-    } else {
-        response.status(404).end();
-    }
-}); */
+app.get("/api/persons/:id", (request, response) => {
+    Person.findById(request.params.id).then(person => {
+        response.json(person)
+    })
+});
 /* 
 createId = (arr) => {
     const max = arr.length > 0 ? Math.max(...arr.map((n) => n.id)) : 0;
 
     return max + 1;
 }; */
+
 // add a person
-/* app.post("/api/persons", (request, response) => {
+app.post("/api/persons", (request, response) => {
     const body = request.body;
 
     if (!body.name || !body.number) {
@@ -103,25 +99,17 @@ createId = (arr) => {
             error: "Number is missing",
         });
     } else {
-        const person = {
-            id: createId(data),
+        const person = new Person({
             name: body.name,
             number: body.number,
-        };
-        const search = data.some(
-            (info) => info.name.toLowerCase() === person.name.toLowerCase()
-        );
-
-        if (search) {
-            return response.status(409).json({
-                error: `${person.name} exists already`,
-            });
-        } else {
-            data = data.concat(person);
-            response.send(true);
-        }
+        });
+        person
+            .save()
+            .then(savedPerson => {
+                response.json(savedPerson)
+            })
     }
-}); */
+});
 
 // delete a person
 /* app.delete("/api/persons/:id", (request, response) => {

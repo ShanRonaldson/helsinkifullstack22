@@ -30,7 +30,7 @@ export const App = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const search = persons.some(person => person.name.toLowerCase() === newName.name.toLowerCase())
+    /* const search = persons.some(person => person.name.toLowerCase() === newName.name.toLowerCase())
 
     if (search) {
       const toChange = persons.filter(person => person.name.toLowerCase() === newName.name.toLowerCase())
@@ -51,22 +51,22 @@ export const App = () => {
           })
 
       }
-    } else if (!search) {
-      create(newName)
-        .then(data => {
-          getAll().then(data => {
-            setPersons(data)
-          })
-          setMessage({ content: `${newName.name} added!`, type: 'created' });
-          setTimeout(() => {
-            setMessage({})
-          }, 5000);
+    } else if (!search) { */
+    create(newName)
+      .then(data => {
+        getAll().then(data => {
+          setPersons(data)
         })
-        .catch(err => {
-          setMessage({ content: `An error occurred while adding ${newName.name}, please try again`, type: 'error' })
-          console.log(err)
-        })
-    }
+        setMessage({ content: `${newName.name} added!`, type: 'created' });
+        setTimeout(() => {
+          setMessage({})
+        }, 5000);
+      })
+      .catch(err => {
+        setMessage({ content: `An error occurred while adding ${newName.name}, please try again`, type: 'error' })
+        console.log(err)
+      })
+    /*  } */
 
     setNewName({ name: '', number: '' })
   }
