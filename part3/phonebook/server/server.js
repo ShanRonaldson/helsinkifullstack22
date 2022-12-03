@@ -17,7 +17,7 @@ app.use(cors());
     )
 );
  */
-
+/* 
 let data = [
     {
         "id": 1,
@@ -40,7 +40,7 @@ let data = [
         "number": "39-23-6423122"
     }
 ]
- */
+  */
 //get front page
 app.get("/", (req, res) => {
     res.send("<h1>Hello World!</h1>");
