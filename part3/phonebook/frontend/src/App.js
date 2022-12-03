@@ -54,7 +54,10 @@ export const App = () => {
     } else if (!search) {
       create(newName)
         .then(data => {
-          setPersons(persons.concat(data)); setMessage({ content: `${newName.name} added!`, type: 'created' })
+          getAll().then(data => {
+            setPersons(data)
+          })
+          setMessage({ content: `${newName.name} added!`, type: 'created' });
           setTimeout(() => {
             setMessage({})
           }, 5000);

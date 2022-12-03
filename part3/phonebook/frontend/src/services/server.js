@@ -1,6 +1,5 @@
 import axios from "axios";
-const serverUrl = 'http://localhost:3001/api/persons'
-
+const serverUrl = '/api/persons'
 
 export const getAll = () => {
     const request = axios.get(serverUrl);
@@ -9,9 +8,7 @@ export const getAll = () => {
 
 export const create = newData => {
     const request = axios.post(serverUrl, newData);
-    const data = request.then(response => response.data)
-    console.log(data)
-    return data
+    return request.then(response => response.data)
 }
 
 export const update = (id, newData) => {
