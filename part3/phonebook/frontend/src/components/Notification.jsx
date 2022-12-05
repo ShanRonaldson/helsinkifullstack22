@@ -1,11 +1,12 @@
+/* eslint-disable react/prop-types */
 export const Notification = ({ message, type }) => {
-  if (message == null || type == null) {
-    return null;
-  }
+	if (message === null || type === null) {
+		return null;
+	}
 
-  return (
-    <>
-      <div className={`notification ${type}`}>{message}</div>
-    </>
-  );
+	return (
+		<>
+			<div className={`notification ${type}`}>{message}</div>
+		</>
+	);
 };
