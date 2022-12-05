@@ -46,7 +46,7 @@ export const App = () => {
             })
           )
           .catch(err => {
-            setMessage({ content: `An error occurred while updating ${newName.name}, please try again`, type: 'error' })
+            setMessage({ content: `An error occurred while updating ${newName.name}, ${err.response.data.error}`, type: 'error' })
             console.log(err)
           })
 
@@ -63,7 +63,7 @@ export const App = () => {
         }, 5000);
       })
       .catch(err => {
-        setMessage({ content: `An error occurred while adding ${newName.name}, please try again`, type: 'error' })
+        setMessage({ content: `An error occurred while adding ${newName.name}, ${err.response.data.error}`, type: 'error' })
         console.log(err)
       })
      }
@@ -99,7 +99,7 @@ export const App = () => {
         }, 5000)
       )
         .catch(err => {
-          setMessage({ content: `An error occurred while deleting ${toDelete[0].name}, please try again`, type: 'error' })
+          setMessage({ content: `An error occurred while deleting ${toDelete[0].name}, ${err.response.data.error}`, type: 'error' })
           console.log(err)
         })
     }

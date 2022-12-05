@@ -15,7 +15,7 @@ export const Add = ({ handleSubmit, handleChange, newName }) => {
 
                 <label htmlFor="number">Number</label>
                 <input id="number"
-                    placeholder="123-123-123"
+                    placeholder="12-12345678"
                     value={newName.number}
                     onChange={(e) => handleChange(e)} />
 
