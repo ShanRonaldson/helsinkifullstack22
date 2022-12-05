@@ -30,7 +30,7 @@ export const App = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    /* const search = persons.some(person => person.name.toLowerCase() === newName.name.toLowerCase())
+    const search = persons.some(person => person.name.toLowerCase() === newName.name.toLowerCase())
 
     if (search) {
       const toChange = persons.filter(person => person.name.toLowerCase() === newName.name.toLowerCase())
@@ -51,7 +51,7 @@ export const App = () => {
           })
 
       }
-    } else if (!search) { */
+    } else if (!search) {
     create(newName)
       .then(data => {
         getAll().then(data => {
@@ -66,7 +66,7 @@ export const App = () => {
         setMessage({ content: `An error occurred while adding ${newName.name}, please try again`, type: 'error' })
         console.log(err)
       })
-    /*  } */
+     }
 
     setNewName({ name: '', number: '' })
   }
@@ -91,14 +91,12 @@ export const App = () => {
 
     if (window.confirm(`Are you sure you want to delete ${toDelete[0].name} ?`)) {
       remove(id).then(
+        getAll().then(data => setPersons(data)),
         setMessage({ content: `${toDelete[0].name} deleted!`, type: 'delete' }),
         setTimeout(() => {
           setMessage({})
           toDelete = []
-        }, 5000),
-        getAll().then(data => {
-          setPersons(data)
-        })
+        }, 5000)
       )
         .catch(err => {
           setMessage({ content: `An error occurred while deleting ${toDelete[0].name}, please try again`, type: 'error' })
