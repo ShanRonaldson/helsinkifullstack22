@@ -14,7 +14,6 @@ export const create = newData => {
 export const update = (id, newData) => {
 	const request = axios.put(`${serverUrl}/${id}`, newData);
 	return request.then(response => response.data);
-
 };
 
 export const remove = (id) => {
