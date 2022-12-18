@@ -63,5 +63,15 @@ const blogs = [
 ];
 
 const blogCount = 2 + 0 + 10 + 12 + 5 + 7;
+const mostPopular = [
+	{
+		_id: '5a422b3a1b54a676234d17f9',
+		title: 'Canonical string reduction',
+		author: 'Edsger W. Dijkstra',
+		url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+		likes: 12,
+		__v: 0
+	}
+];
 
-module.exports = { emptyBlog, listWithOneBlog, blogs, blogCount };
+module.exports = { emptyBlog, listWithOneBlog, blogs, blogCount, mostPopular };

@@ -28,3 +28,21 @@ describe('total likes', () => {
 	});
 
 });
+
+describe('most popular blog', () => {
+
+	test('most popular blog of an empty blog should be 0', () => {
+		const result = listHelper.favoriteBlog(data.emptyBlog);
+		expect(result).toEqual('No blogs found');
+	});
+
+	test('most popular blog of one list of one should be that blog', () => {
+		const result = listHelper.favoriteBlog(data.listWithOneBlog);
+		expect(result).toEqual(data.listWithOneBlog);
+	});
+
+	test('most popular blog of a large list is correct', () => {
+		const result = listHelper.favoriteBlog(data.blogs);
+		expect(result).toEqual(data.mostPopular);
+	});
+});
