@@ -76,7 +76,29 @@ const mostPopular = [
 
 const newBlog = {
 	title: 'I am a new blog',
-	author: 'I am a new author'
+	author: 'I am a new author',
+	url: 'www.newBlog.com'
 };
 
-module.exports = { emptyBlog, listWithOneBlog, blogs, blogCount, mostPopular, newBlog };
+const noTitle = {
+	author: 'I do not have a title',
+	url: 'www.noAuth.com'
+};
+
+const noAuthor = {
+	title: 'I do not have an author',
+	url: 'www.noTitle.com'
+};
+
+const noUrl = {
+	title: 'No URL',
+	author: 'No URL',
+	likes: 23
+};
+
+const noTitleOrAuthor = {
+	url: 'www.google.com',
+	likes: 23
+};
+
+module.exports = { emptyBlog, listWithOneBlog, blogs, blogCount, mostPopular, newBlog, noTitle, noAuthor, noTitleOrAuthor, noUrl };

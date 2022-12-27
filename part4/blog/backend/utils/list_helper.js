@@ -1,3 +1,5 @@
+const Blog = require('../models/blog');
+
 /* eslint-disable no-unused-vars */
 const dummy = (blogs) => {
 	/* if(blogs.length > 0){
@@ -34,5 +36,10 @@ const favoriteBlog = (blogs) => {
 	}
 };
 
+const dataInDB = async () => {
+	const data = await Blog.find({});
+	return data.map(arr => arr.toJSON());
+};
 
-module.exports = { dummy, totalLikes, favoriteBlog };
+
+module.exports = { dummy, totalLikes, favoriteBlog, dataInDB };
