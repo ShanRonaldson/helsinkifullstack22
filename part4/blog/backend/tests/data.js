@@ -74,4 +74,9 @@ const mostPopular = [
 	}
 ];
 
-module.exports = { emptyBlog, listWithOneBlog, blogs, blogCount, mostPopular };
+const newBlog = {
+	title: 'I am a new blog',
+	author: 'I am a new author'
+};
+
+module.exports = { emptyBlog, listWithOneBlog, blogs, blogCount, mostPopular, newBlog };
