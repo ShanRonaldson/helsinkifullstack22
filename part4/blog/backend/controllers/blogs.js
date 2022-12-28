@@ -43,6 +43,7 @@ blogRouter.get('/:id', async(request, response) => {
 	}
 });
 
+// update an existing blog
 blogRouter.put('/:id', async (request, response) => {
 	const { title, author, url, likes } = request.body;
 

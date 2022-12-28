@@ -1,4 +1,5 @@
 const Blog = require('../models/blog');
+const User = require('../models/user');
 
 /* eslint-disable no-unused-vars */
 const dummy = (blogs) => {
@@ -41,5 +42,10 @@ const dataInDB = async () => {
 	return data.map(arr => arr.toJSON());
 };
 
+const usersInDb = async () => {
+	const users = await User.find({});
+	return users.map(u => u.toJSON());
+};
 
-module.exports = { dummy, totalLikes, favoriteBlog, dataInDB };
+
+module.exports = { dummy, totalLikes, favoriteBlog, dataInDB, usersInDb };
