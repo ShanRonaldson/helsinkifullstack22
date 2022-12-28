@@ -9,6 +9,7 @@ function App() {
 	const [blogs, setBlogs] = useState([]);
 	const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '', likes: 0 });
 
+
 	useEffect(() => {
 		getAll().then(data => {
 			setBlogs(data);
@@ -49,11 +50,15 @@ function App() {
 		}
 	};
 
+	const handleUpdate = (data) => {
+		setBlogs(data);
+	};
+
 	return (
 		<>
 			<Input newBlog={newBlog} setNewBlog={setNewBlog} handleChange={handleChange} handleSubmit={addNew} />
 
-			<List blogs={blogs} handleDelete={handleDelete}/>
+			<List blogs={blogs} handleDelete={handleDelete} handleUpdate={handleUpdate}/>
 		</>
 	);
 }

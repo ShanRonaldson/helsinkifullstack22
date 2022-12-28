@@ -125,6 +125,7 @@ describe('adding a new blog', () => {
 describe('deleting a blog using click', () => {
 	let blogToDelete = [];
 	const blogID = '5a422a851b54a676234d17f7';
+
 	test('find the React Patterns blog', async () => {
 		const response = await api.get('/api/blogs');
 		blogToDelete = response.body.filter(array => array.id === blogID);
@@ -137,6 +138,61 @@ describe('deleting a blog using click', () => {
 			.expect(204)
 			.then(async () => {
 				expect(await Blog.findById({ _id: blogID })).toBeFalsy();
+			});
+	});
+});
+
+describe('update a blog using click', () => {
+	let blogToEdit = [];
+	const blogId = '5a422bc61b54a676234d17fc';
+	const newTitle = 'Type War title change';
+	const newAuthor = 'New Author';
+	const newUrl = 'www.new.url';
+	const newLikes = 20;
+
+	test('find the Type Wars blog', async () => {
+		const response = await api.get('/api/blogs');
+		blogToEdit = response.body.filter(array => array.id === blogId);
+		expect(blogToEdit[0].title).toContain('Type wars');
+	});
+
+	test('can edit and update title', async () => {
+		await api.put(`/api/blogs/${blogId}`)
+			.send({ title: newTitle })
+			.expect(200)
+			.then(async () => {
+				const edited = await Blog.findById({ _id: blogId });
+				expect(edited.title).toContain(newTitle);
+			});
+	});
+
+	test('can edit and update author', async () => {
+		await api.put(`/api/blogs/${blogId}`)
+			.send({ author: newAuthor })
+			.expect(200)
+			.then(async () => {
+				const edited = await Blog.findById({ _id: blogId });
+				expect(edited.author).toContain(newAuthor);
+			});
+	});
+
+	test('can edit and update url', async () => {
+		await api.put(`/api/blogs/${blogId}`)
+			.send({ url: newUrl })
+			.expect(200)
+			.then(async () => {
+				const edited = await Blog.findById({ _id: blogId });
+				expect(edited.url).toContain(newUrl);
+			});
+	});
+
+	test('can edit and update likes', async () => {
+		await api.put(`/api/blogs/${blogId}`)
+			.send({ likes: newLikes })
+			.expect(200)
+			.then(async () => {
+				const edited = await Blog.findById({ _id: blogId });
+				expect(edited.likes).toEqual(newLikes);
 			});
 	});
 });

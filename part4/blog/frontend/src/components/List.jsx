@@ -1,5 +1,7 @@
+import { Row } from './Row';
+
 /* eslint-disable react/prop-types */
-export const List = ({ blogs, handleDelete }) => {
+export const List = ({ blogs, handleDelete, handleUpdate }) => {
 
 	if(blogs.length > 0){
 		return(
@@ -16,13 +18,7 @@ export const List = ({ blogs, handleDelete }) => {
 					</thead>
 					<tbody>
 						{blogs.map((blog, id) => (
-							<tr key={id}>
-								<td>{blog.title}</td>
-								<td>{blog.author}</td>
-								<td>{blog.url}</td>
-								<td>{blog.likes}</td>
-								<td><button className="delete-button" onClick={() => handleDelete(blog.id)}>Delete</button></td>
-							</tr>
+							<Row key={id} blog={blog} handleDelete={handleDelete} handleUpdate={handleUpdate} />
 						))}
 					</tbody>
 				</table>

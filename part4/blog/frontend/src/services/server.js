@@ -15,9 +15,9 @@ export const remove = (id) => {
 	const request = axios.delete(`${serverUrl}/${id}`);
 	return request.then(response => response.data);
 };
-/*
+
 export const update = (id, newData) => {
 	const request = axios.put(`${serverUrl}/${id}`, newData);
 	return request.then(response => response.data);
 };
-  */
+
