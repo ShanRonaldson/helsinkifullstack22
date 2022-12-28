@@ -122,6 +122,24 @@ describe('adding a new blog', () => {
 
 });
 
+describe('deleting a blog using click', () => {
+	let blogToDelete = [];
+	const blogID = '5a422a851b54a676234d17f7';
+	test('find the React Patterns blog', async () => {
+		const response = await api.get('/api/blogs');
+		blogToDelete = response.body.filter(array => array.id === blogID);
+		expect(blogToDelete[0].title).toContain('React patterns');
+	});
+
+	test('deletes selected blog', async () => {
+		await api
+			.delete('/api/blogs/5a422a851b54a676234d17f7')
+			.expect(204)
+			.then(async () => {
+				expect(await Blog.findById({ _id: blogID })).toBeFalsy();
+			});
+	});
+});
 
 afterAll(() => {
 	mongoose.connection.close();

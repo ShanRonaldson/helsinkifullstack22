@@ -33,6 +33,7 @@ export const Input = ({ newBlog, handleSubmit, handleChange }) => {
 					type="text"
 					name="url"
 					id="url"
+					required
 					value={newBlog.url}
 					onChange={(e) => handleChange(e)}
 				/>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { List } from './components/List';
 import { Input } from './components/Input';
-import { getAll, create } from './services/server';
+import { getAll, create, remove } from './services/server';
 
 
 function App() {
@@ -37,11 +37,23 @@ function App() {
 		setNewBlog({ title: '', author: '', url: '', likes: 0 });
 	};
 
+	const handleDelete = (id) => {
+		let toDelete = blogs.filter((blog) => blog.id === id);
+
+		if(window.confirm(`Are you sure you want to delete ${toDelete[0].title} ?`)){
+			remove(id)
+				.then(getAll().then(data => setBlogs(data)))
+				.catch(err => {
+					console.log(err);
+				});
+		}
+	};
+
 	return (
 		<>
 			<Input newBlog={newBlog} setNewBlog={setNewBlog} handleChange={handleChange} handleSubmit={addNew} />
 
-			<List blogs={blogs} />
+			<List blogs={blogs} handleDelete={handleDelete}/>
 		</>
 	);
 }
