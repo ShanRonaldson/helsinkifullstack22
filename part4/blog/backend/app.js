@@ -1,19 +1,26 @@
 
+//packages
 const mongoose = require('mongoose');
 const express = require('express');
 const cors = require('cors');
 require('express-async-errors');
 
+//routers
 const blogRouter = require('./controllers/blogs');
 const userRouter = require('./controllers/users');
+const loginRouter = require('./controllers/login');
+
+//utils
 const config = require('./utils/config');
 const middleware = require('./utils/middleware');
 const logger = require('./utils/logger');
 
+//initial setup
 const app = express();
 
 logger.info('connecting to', config.MONGODB_URI);
 
+//connection
 mongoose
 	.connect(config.MONGODB_URI)
 	.then(() => {
@@ -29,9 +36,12 @@ app.use(express.json());
 
 app.use(middleware.requestLogger);
 
+//controller setup
 app.use('/api/blogs', blogRouter);
 app.use('/api/users', userRouter);
+app.use('/api/login', loginRouter);
 
+//error handlers
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
 

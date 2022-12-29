@@ -1,16 +1,27 @@
+/* eslint-disable no-undef */
 const blogRouter = require('express').Router();
+const jwt = require('jsonwebtoken');
+const middleware = require('../utils/middleware');
+
 const Blog = require('../models/blog');
 const User = require('../models/user');
 
+
 blogRouter.get('/', async (request, response) => {
-	const blogs = await	Blog.find({});
+	const blogs = await	Blog.find({}).populate('user', { username: 1, name: 1 });
 	response.json(blogs);
 });
 
 blogRouter.post('/', async (request, response) => {
 	const body = await request.body;
+	const token = middleware.getTokenFrom(request);
 
-	const user = await User.findById(body.userId);
+	const decodedToken = jwt.verify(token, process.env.SECRET);
+	if (!decodedToken.id) {
+		return response.status(401).json({ error: 'token missing or invalid' });
+	}
+
+	const user = await User.findById(decodedToken.id);
 
 	const blog = new Blog({
 		title: body.title,
@@ -53,6 +64,18 @@ blogRouter.get('/:id', async(request, response) => {
 // update an existing blog
 blogRouter.put('/:id', async (request, response) => {
 	const { title, author, url, likes } = request.body;
+
+	const data = await Blog.findById(request.params.id);
+	const user = await User.findById(data.user);
+
+	const token = middleware.getTokenFrom(request);
+
+	const decodedToken = jwt.verify(token, process.env.SECRET);
+	if (!decodedToken.id) {
+		return response.status(401).json({ error: 'token missing or invalid' });
+	} else if(user.id !== decodedToken.id){
+		return response.status(401).json({ error: 'invalid login. not the creator of the blog' });
+	}
 
 	const blog = await Blog.findByIdAndUpdate(request.params.id,{ title, author, url, likes }, { new: true });
 
