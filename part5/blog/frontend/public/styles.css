@@ -42,3 +42,29 @@
     grid-area: 4 / 2 / 5 / 4;
     justify-self: center;
 }
+
+
+.notification {
+    position: sticky;
+    top: 0;
+    width: 100vw;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    font-size: x-large;
+}
+
+
+.error {
+    background-color: lightcoral;
+    border: 1px solid red;
+    color: red;
+}
+
+.delete,
+.updated,
+.created {
+    color: green;
+    background-color: lightgreen;
+    border: 1px solid green;
+}

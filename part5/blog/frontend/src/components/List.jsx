@@ -2,7 +2,7 @@ import { Row } from './Row';
 import { TableHeading } from './TableHeading';
 
 /* eslint-disable react/prop-types */
-export const List = ({ blogs, handleUpdate, loggedInState }) => {
+export const List = ({ blogs, handleUpdate, loggedInState, setMessage }) => {
 
 	return(
 		<>
@@ -21,7 +21,7 @@ export const List = ({ blogs, handleUpdate, loggedInState }) => {
 						<TableHeading/>
 						<tbody>
 							{blogs.map((blog, id) => (
-								<Row key={id} blog={blog} handleUpdate={handleUpdate} loggedInState={loggedInState} />
+								<Row key={id} blog={blog} handleUpdate={handleUpdate} loggedInState={loggedInState} setMessage={setMessage}/>
 							))}
 						</tbody>
 					</table>

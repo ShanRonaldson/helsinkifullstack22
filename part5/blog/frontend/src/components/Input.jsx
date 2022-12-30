@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { create, getAll } from '../services/blogService';
 
-export const Input = ({ handleAdd }) => {
+export const Input = ({ handleAdd, setMessage }) => {
 	const [newBlog, setNewBlog] = useState({
 		title: '',
 		author: '',
@@ -21,10 +21,18 @@ export const Input = ({ handleAdd }) => {
 			.then(() => {
 				getAll().then((data) => {
 					handleAdd(data);
+					setMessage({ content: `'${newBlog.title}' created!`, type: 'created' });
+					setTimeout(() => {
+						setMessage({});
+					}, 5000);
 				});
 			})
 			.catch((err) => {
 				console.log(err);
+				setMessage({ content: `'${newBlog.title}' unable to be created. Please try again.`, type: 'error' });
+				setTimeout(() => {
+					setMessage({});
+				}, 5000);
 			});
 
 		setNewBlog({ title: '', author: '', url: '', likes: 0 });

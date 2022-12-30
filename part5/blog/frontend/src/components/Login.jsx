@@ -1,10 +1,20 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { login } from '../services/loginService';
 
-export const Login = ({ setUser, setToken }) => {
+export const Login = ({ handleCredentials, setLoginState, setMessage }) => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
+
+
+	useEffect(() => {
+		const loggedUserJSON = window.localStorage.getItem('loggedAppUser');
+		if (loggedUserJSON) {
+			const user = JSON.parse(loggedUserJSON);
+			handleCredentials(user);
+			setLoginState(true);
+		}
+	}, []);
 
 	const handleLogin = async (event) => {
 		event.preventDefault();
@@ -14,12 +24,16 @@ export const Login = ({ setUser, setToken }) => {
 			const user = await login({
 				username, password,
 			});
-			setToken(user.token);
-			setUser(user);
+			handleCredentials(user);
+			setLoginState(true);
 			setUsername('');
 			setPassword('');
 		} catch (exception) {
 			console.log( exception);
+			setMessage({ content: 'Incorrect password or username', type: 'error' });
+			setTimeout(() => {
+				setMessage({});
+			}, 5000);
 		}};
 
 	return (

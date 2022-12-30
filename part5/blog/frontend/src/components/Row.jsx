@@ -3,11 +3,9 @@ import { useState } from 'react';
 import { update, getAll, remove } from '../services/blogService';
 
 
-export const Row = ({ id, blog, handleUpdate, loggedInState }) => {
+export const Row = ({ id, blog, handleUpdate, loggedInState, setMessage }) => {
 	const [startEdit, setStartEdit] = useState(false);
 	const [blogClone, setClone] = useState({});
-	/* const [editedBlog, setEditedBlog] = useState({}); */
-	/* const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '', likes: 0 }); */
 
 	const handleChange = (e) => {
 		setClone({ ...blogClone, [e.target.id]: e.target.value });
@@ -19,7 +17,17 @@ export const Row = ({ id, blog, handleUpdate, loggedInState }) => {
 				update(blog.id, blogClone).then(() => {
 					getAll().then(data => {
 						handleUpdate(data);
+						setMessage({ content: `'${blog.title}' updated!`, type: 'updated' });
+						setTimeout(() => {
+							setMessage({});
+						}, 5000);
 					});
+				}).catch(err => {
+					console.log('handle edit error',err);
+					setMessage({ content: `An error occurred, unable to edit '${blog.title}'. Please try again.`, type: 'error' });
+					setTimeout(() => {
+						setMessage({});
+					}, 5000);
 				});
 				setStartEdit(false);
 			}
@@ -34,9 +42,19 @@ export const Row = ({ id, blog, handleUpdate, loggedInState }) => {
 			window.confirm(`Are you sure you want to delete ${toDelete.title} ?`)
 		) {
 			remove(id)
-				.then(getAll().then((data) => handleUpdate(data)))
+				.then(getAll().then((data) => {
+					handleUpdate(data);
+					setMessage({ content: `'${blog.title}' deleted!`, type: 'delete' });
+					setTimeout(() => {
+						setMessage({});
+					}, 5000);
+				}))
 				.catch((err) => {
 					console.log(err);
+					setMessage({ content: `An error occurred, unable to delete '${blog.title}'. Please try again.`, type: 'error' });
+					setTimeout(() => {
+						setMessage({});
+					}, 5000);
 				});
 		}
 	};
