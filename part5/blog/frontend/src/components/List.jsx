@@ -1,43 +1,32 @@
 import { Row } from './Row';
+import { TableHeading } from './TableHeading';
 
 /* eslint-disable react/prop-types */
-export const List = ({ blogs, handleDelete, handleUpdate }) => {
+export const List = ({ blogs, handleUpdate, loggedInState }) => {
 
-	if(blogs.length > 0){
-		return(
-			<>
-				<h2>Blog list</h2>
-				<table>
-					<thead>
-						<tr>
-							<th>Title</th>
-							<th>Author</th>
-							<th>URL Link</th>
-							<th>Number of Likes</th>
-						</tr>
-					</thead>
-					<tbody>
-						{blogs.map((blog, id) => (
-							<Row key={id} blog={blog} handleDelete={handleDelete} handleUpdate={handleUpdate} />
-						))}
-					</tbody>
-				</table>
-			</>
-		);} else{
-		return(
-			<>
-				<h2>Blog list</h2>
-				<table>
-					<thead>
-						<tr>
-							<th>Title</th>
-							<th>Author</th>
-							<th>URL Link</th>
-							<th>Number of Likes</th>
-						</tr>
-					</thead>
-				</table>
-			</>
-		);
-	}
+	return(
+		<>
+			{blogs.length < 0 ?
+				<>
+					<h2>Blog List</h2>
+					<table>
+						<TableHeading/>
+					</table>
+
+				</>
+				:
+				<>
+					<h2>Blog List</h2>
+					<table>
+						<TableHeading/>
+						<tbody>
+							{blogs.map((blog, id) => (
+								<Row key={id} blog={blog} handleUpdate={handleUpdate} loggedInState={loggedInState} />
+							))}
+						</tbody>
+					</table>
+				</>
+			}
+		</>
+	);
 };

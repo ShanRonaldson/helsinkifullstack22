@@ -30,14 +30,13 @@ const errorHandler = (error, request, response, next) => {
 };
 
 
-const getTokenFrom = (request, next, error) => {
+const getTokenFrom = (request) => {
 	const authorization = request.get('authorization');
 	if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
 		const token = authorization.substring(7);
 		return token.trim();
-	} else{
-		return next(error);
 	}
+
 };
 
 module.exports = {

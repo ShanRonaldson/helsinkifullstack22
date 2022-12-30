@@ -1,10 +1,39 @@
 /* eslint-disable react/prop-types */
-export const Input = ({ newBlog, handleSubmit, handleChange }) => {
+import { useState } from 'react';
+import { create, getAll } from '../services/blogService';
+
+export const Input = ({ handleAdd }) => {
+	const [newBlog, setNewBlog] = useState({
+		title: '',
+		author: '',
+		url: '',
+		likes: 0,
+	});
+
+	const handleChange = (e) => {
+		setNewBlog({ ...newBlog, [e.target.id]: e.target.value });
+	};
+
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		create(newBlog)
+			.then(() => {
+				getAll().then((data) => {
+					handleAdd(data);
+				});
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+
+		setNewBlog({ title: '', author: '', url: '', likes: 0 });
+	};
 
 	return (
 		<>
 			<h2>Add new blog</h2>
-			<form className="form" action="submit" onSubmit={(e) => handleSubmit(e)}>
+			<form className="form" action="submit" onSubmit={handleSubmit}>
 				<label htmlFor="title" className="title">Title</label>
 				<input
 					className="title"

@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
-import { update, getAll } from '../services/server';
+import { update, getAll, remove } from '../services/blogService';
 
-export const Row = ({ id, blog, handleDelete, handleUpdate }) => {
+
+export const Row = ({ id, blog, handleUpdate, loggedInState }) => {
 	const [startEdit, setStartEdit] = useState(false);
 	const [blogClone, setClone] = useState({});
 	/* const [editedBlog, setEditedBlog] = useState({}); */
@@ -26,18 +27,35 @@ export const Row = ({ id, blog, handleDelete, handleUpdate }) => {
 			setClone(blog);
 		}
 	};
+
+	const handleDelete = (id) => {
+		let toDelete = blog;
+		if (
+			window.confirm(`Are you sure you want to delete ${toDelete.title} ?`)
+		) {
+			remove(id)
+				.then(getAll().then((data) => handleUpdate(data)))
+				.catch((err) => {
+					console.log(err);
+				});
+		}
+	};
+
 	return(
 		<tr key={id}>
 			<td>{startEdit ? <input required type='text' id='title' value={blogClone.title} onChange={(event) => handleChange(event)}/> : blog.title}</td>
 			<td>{startEdit ? <input required type='text' id='author' value={blogClone.author} onChange={(event) => handleChange(event)}/> : blog.author}</td>
 			<td>{startEdit ? <input required type='text' id='url' value={blogClone.url} onChange={(event) => handleChange(event)}/> : blog.url}</td>
 			<td>{startEdit ? <input type='number' id='likes' value={blogClone.likes} onChange={(event) => handleChange(event)}/> : blog.likes}</td>
-			<td><button className="delete-button" onClick={() => handleDelete(blogClone.id)}>Delete</button></td>
-			<td>{startEdit ? <button onClick={() =>  handleEdit()}>Save</button> :
-				<button className="edit-button" onClick={() => (setStartEdit(true), setClone(blog))}>
+			{ loggedInState ? <>
+				<td><button className="delete-button" onClick={() => handleDelete(blogClone)}>Delete</button></td>
+				<td>{startEdit ? <button onClick={() =>  handleEdit()}>Save</button> :
+					<button className="edit-button" onClick={() => (setStartEdit(true), setClone(blog))}>
                 Edit</button>
+				}
+				</td>
+			</> : ''
 			}
-			</td>
 		</tr>
 	);
 
