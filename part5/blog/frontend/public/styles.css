@@ -68,3 +68,22 @@
     background-color: lightgreen;
     border: 1px solid green;
 }
+
+.center {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.center-wrapper {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+.center-wrapper .center {
+    align-self: center;
+}
