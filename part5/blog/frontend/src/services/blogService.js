@@ -1,6 +1,7 @@
 import axios from 'axios';
 const serverUrl = '/api/blogs';
 const userUrl = '/api/users';
+const ratingUrl = '/api/rating';
 
 let token = null;
 
@@ -38,6 +39,16 @@ export const update =  async (id, newData) => {
 	};
 
 	const response = await  axios.put(`${serverUrl}/${id}`, newData, config);
+	return response.data;
+};
+
+export const addLikes = async(id) => {
+
+	const config = {
+		headers: { Authorization: token },
+	};
+
+	const response = await axios.put(`${ratingUrl}/${id}`,[id], config);
 	return response.data;
 };
 

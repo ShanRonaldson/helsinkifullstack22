@@ -32,16 +32,28 @@ const errorHandler = (error, request, response, next) => {
 
 const getTokenFrom = (request) => {
 	const authorization = request.get('authorization');
-	if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+	console.log('auth:', authorization);
+	if (authorization && authorization.toLowerCase().startsWith('bearer')) {
 		const token = authorization.substring(7);
+		console.log('token', token);
 		return token.trim();
 	}
+};
 
+const sendData = async (data, response, model) => {
+	if(data){
+		response.status(200);
+		const arr = await model.find({});
+		response.json(arr);
+	}else{
+		response.status(500).end();
+	}
 };
 
 module.exports = {
 	requestLogger,
 	unknownEndpoint,
 	errorHandler,
-	getTokenFrom
+	getTokenFrom,
+	sendData
 };

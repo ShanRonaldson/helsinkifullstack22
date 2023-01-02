@@ -15,10 +15,18 @@ function App() {
 	const [message, setMessage] = useState({});
 	const [show, setShow] = useState(false);
 
+	const sortByLikes = (a, b) => {
+		let lengthA = a.likes.length;
+		let lengthB = b.likes.length;
+
+		return lengthB - lengthA;
+	};
+
 	useEffect(() => {
 		getAll()
 			.then((data) => {
-				setBlogs(data);
+				let sorted = data.sort(sortByLikes);
+				setBlogs(sorted);
 			})
 			.catch((err) => {
 				setMessage({
@@ -35,11 +43,13 @@ function App() {
 
 	const handleAdd = (data) => {
 		setShow(false);
-		setBlogs(data);
+		let sorted = data.sort(sortByLikes);
+		setBlogs(sorted);
 	};
 
 	const handleUpdate = (data) => {
-		setBlogs(data);
+		let sorted = data.sort(sortByLikes);
+		setBlogs(sorted);
 	};
 
 	const handleCredentials = (user) => {
@@ -73,9 +83,9 @@ function App() {
 					<Heading message={`Welcome ${user.name} !`} />
 					<Logout handleCredentials={handleCredentials} />
 					{show ? (
-						<section className='center-wrapper'>
+						<section className="center-wrapper">
 							<Input handleAdd={handleAdd} setMessage={setMessage} />
-							<ShowButton message={'Cancel'} handleClick={handleShow}/>
+							<ShowButton message={'Cancel'} handleClick={handleShow} />
 						</section>
 					) : (
 						<ShowButton message={'Add new blog'} handleClick={handleShow} />

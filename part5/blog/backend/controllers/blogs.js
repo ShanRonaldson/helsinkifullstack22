@@ -5,7 +5,7 @@ const middleware = require('../utils/middleware');
 
 const Blog = require('../models/blog');
 const User = require('../models/user');
-
+const Rating = require('../models/rating');
 
 blogRouter.get('/', async (request, response) => {
 	const blogs = await	Blog.find({}).populate('user', { username: 1, name: 1 });
@@ -22,17 +22,27 @@ blogRouter.post('/', async (request, response) => {
 	}
 
 	const user = await User.findById(decodedToken.id);
+	const rating = new Rating({
+		value: 1
+	});
+	const savedRating = await rating.save();
 
 	const blog = new Blog({
 		title: body.title,
 		author: body.author,
 		url: body.url,
-		likes: (body.likes > 0) ? body.likes : 0,
+		likes: savedRating._id,
 		user: user._id
 	});
 
 	const savedBlog = await blog.save();
+
+	rating.blog = savedBlog._id;
+	rating.users = rating.users.concat(user._id);
+
+
 	user.blogs = user.blogs.concat(savedBlog._id);
+	user.ratings = user.ratings.concat(savedRating._id);
 	await user.save();
 
 	response.status(201).json(savedBlog);
@@ -63,7 +73,7 @@ blogRouter.get('/:id', async(request, response) => {
 
 // update an existing blog
 blogRouter.put('/:id', async (request, response) => {
-	const { title, author, url, likes } = request.body;
+	const { title, author, url } = request.body;
 
 	const data = await Blog.findById(request.params.id);
 	const user = await User.findById(data.user);
@@ -77,15 +87,9 @@ blogRouter.put('/:id', async (request, response) => {
 		return response.status(401).json({ error: 'invalid login. not the creator of the blog' });
 	}
 
-	const blog = await Blog.findByIdAndUpdate(request.params.id,{ title, author, url, likes }, { new: true });
+	const blog = await Blog.findByIdAndUpdate(request.params.id,{ title, author, url }, { new: true });
 
-	if(blog){
-		response.status(200);
-		const blogs = await	Blog.find({});
-		response.json(blogs);
-	} else{
-		response.status(500).end();
-	}
+	middleware.sendData(blog, response, Blog);
 });
 
 module.exports =  blogRouter ;

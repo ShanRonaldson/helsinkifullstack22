@@ -3,7 +3,6 @@ import { TableHeading } from './TableHeading';
 
 /* eslint-disable react/prop-types */
 export const List = ({ blogs, handleUpdate, loggedInState, setMessage }) => {
-
 	return(
 		<>
 			{blogs.length < 0 ?

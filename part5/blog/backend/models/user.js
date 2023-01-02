@@ -21,6 +21,12 @@ const userSchema = new mongoose.Schema({
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Blog'
 		}
+	],
+	ratings: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Rating'
+		}
 	]
 });
 
