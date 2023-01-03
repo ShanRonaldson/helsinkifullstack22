@@ -1,12 +1,14 @@
-/* eslint-disable react/prop-types */
-export const Message = ({ message, type }) => {
-	if (message === null || type === null) {
-		return null;
-	}
+import PropTypes from 'prop-types'
 
-	return (
-		<>
-			<div className={`notification ${type}`}>{message}</div>
-		</>
-	);
-};
+export const Message = ({ message, type }) => {
+  return (
+    <>
+      <div className={`notification ${type}`}>{message}</div>
+    </>
+  )
+}
+
+Message.propTypes = {
+  message: PropTypes.string,
+  type: PropTypes.string
+}
