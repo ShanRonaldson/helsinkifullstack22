@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 
 //packages
 const mongoose = require('mongoose');
@@ -42,6 +43,11 @@ app.use('/api/blogs', blogRouter);
 app.use('/api/users', userRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/rating',ratingRouter);
+
+if (process.env.NODE_ENV === 'test') {
+	const testingRouter = require('./controllers/test');
+	app.use('/api/testing', testingRouter);
+}
 
 //error handlers
 app.use(middleware.unknownEndpoint);

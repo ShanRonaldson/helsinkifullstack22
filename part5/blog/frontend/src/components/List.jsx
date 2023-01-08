@@ -7,18 +7,18 @@ export const List = ({ blogs, handleUpdate, loggedInState, setMessage }) => {
     <>
       {blogs.length < 0 ?
         <>
-          <h2>Blog List</h2>
-          <table>
+          <h2 data='blog-heading-h2'>Blog List</h2>
+          <table data='list-table'>
             <TableHeading/>
           </table>
 
         </>
         :
         <>
-          <h2>Blog List</h2>
-          <table>
+          <h2 data='blog-heading-h2'>Blog List</h2>
+          <table data='list-table'>
             <TableHeading/>
-            <tbody>
+            <tbody data='table-body'>
               {blogs.map((blog, id) => (
                 <Row key={id} id={id} blog={blog} handleUpdate={handleUpdate} loggedInState={loggedInState} setMessage={setMessage}/>
               ))}

@@ -27,8 +27,6 @@ ratingRouter.put('/:id', async (request, response) => {
 	const ratingData = await Rating.findById(blog.likes);
 
 	const token = middleware.getTokenFrom(request);
-	console.log('config',request.get('authorization'));
-	console.log('token', token);
 	const decodedToken = jwt.verify(token, process.env.SECRET);
 
 	const user = await User.findById(decodedToken.id);
@@ -48,7 +46,6 @@ ratingRouter.put('/:id', async (request, response) => {
 		await user.save();
 
 		blog.likes = blog.likes.concat(ratingData._id);
-		console.log(blog);
 		const savedBlog = await blog.save();
 
 		response.status(201).json(savedBlog);

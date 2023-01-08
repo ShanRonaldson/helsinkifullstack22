@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { create, getAll } from '../services/blogService'
 import PropTypes from 'prop-types'
 
-
 export const Input = ({ handleAdd, setMessage }) => {
   const [newBlog, setNewBlog] = useState({
     title: '',
@@ -15,14 +14,16 @@ export const Input = ({ handleAdd, setMessage }) => {
     setNewBlog({ ...newBlog, [e.target.id]: e.target.value })
   }
 
-
   const handleSubmit = (e) => {
     e.preventDefault()
     create(newBlog)
       .then(() => {
         getAll().then((data) => {
           handleAdd(data)
-          setMessage({ content: `'${newBlog.title}' created!`, type: 'created' })
+          setMessage({
+            content: `'${newBlog.title}' created!`,
+            type: 'created',
+          })
           setTimeout(() => {
             setMessage({})
           }, 5000)
@@ -30,7 +31,10 @@ export const Input = ({ handleAdd, setMessage }) => {
       })
       .catch((err) => {
         console.log(err)
-        setMessage({ content: `'${newBlog.title}' unable to be created. Please try again.`, type: 'error' })
+        setMessage({
+          content: `'${newBlog.title}' unable to be created. Please try again.`,
+          type: 'error',
+        })
         setTimeout(() => {
           setMessage({})
         }, 5000)
@@ -43,8 +47,11 @@ export const Input = ({ handleAdd, setMessage }) => {
     <>
       <h2>Add new blog</h2>
       <form className="form" action="submit" onSubmit={handleSubmit}>
-        <label htmlFor="title" className="title">Title</label>
+        <label htmlFor="title" className="title">
+          Title
+        </label>
         <input
+          data="title-input"
           className="title"
           required={true}
           type="text"
@@ -54,8 +61,11 @@ export const Input = ({ handleAdd, setMessage }) => {
           onChange={(e) => handleChange(e)}
         />
 
-        <label htmlFor="author" className="author">Author</label>
+        <label htmlFor="author" className="author">
+          Author
+        </label>
         <input
+          data="author-input"
           className="author"
           type="text"
           required={true}
@@ -65,8 +75,11 @@ export const Input = ({ handleAdd, setMessage }) => {
           onChange={(e) => handleChange(e)}
         />
 
-        <label htmlFor="url" className="link">Blog URL</label>
+        <label htmlFor="url" className="link">
+          Blog URL
+        </label>
         <input
+          data="url-input"
           className="link"
           type="text"
           name="url"
@@ -75,17 +88,9 @@ export const Input = ({ handleAdd, setMessage }) => {
           value={newBlog.url}
           onChange={(e) => handleChange(e)}
         />
-
-        <label htmlFor="likes" className="likes">Number of likes</label>
-        <input
-          className="likes"
-          type="number"
-          name="likes"
-          id="likes"
-          value={newBlog.likes}
-          onChange={(e) => handleChange(e)}
-        />
-        <button className="submit" type="submit">Add new blog listing</button>
+        <button className="submit" type="submit" data='submit-new-blog-button'>
+          Add new blog listing
+        </button>
       </form>
     </>
   )
@@ -93,5 +98,5 @@ export const Input = ({ handleAdd, setMessage }) => {
 
 Input.propTypes = {
   handleAdd: PropTypes.func.isRequired,
-  setMessage: PropTypes.func
+  setMessage: PropTypes.func,
 }

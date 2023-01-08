@@ -8,7 +8,7 @@ export const Logout = ({ handleCredentials }) => {
 
   return(
     <>
-      <button type="submit" onClick={() => handleLogout()}>Logout</button>
+      <button data='logout-button' type="submit" onClick={() => handleLogout()}>Logout</button>
     </>
   )
 }

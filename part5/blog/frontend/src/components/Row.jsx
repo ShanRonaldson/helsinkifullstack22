@@ -70,10 +70,9 @@ export const Row = ({ id, blog, handleUpdate, loggedInState, setMessage }) => {
   }
 
   const addLike = () => {
-    console.log('blog', blog)
     addLikes(blog.id)
       .then(() => {
-        getAll().then(data => {
+        getAll().then((data) => {
           handleUpdate(data)
           setMessage({
             content: `'${blog.title}' liked!`,
@@ -83,7 +82,8 @@ export const Row = ({ id, blog, handleUpdate, loggedInState, setMessage }) => {
             setMessage({})
           }, 5000)
         })
-      }).catch((err) => {
+      })
+      .catch((err) => {
         console.log('update likes error', err)
         setMessage({
           content: `You've already liked '${blog.title}'!`,
@@ -136,16 +136,16 @@ export const Row = ({ id, blog, handleUpdate, loggedInState, setMessage }) => {
           blog.url
         )}
       </td>
-      <td>
-        {blog.likes.length}
-      </td>
+      <td>{blog.likes.length}</td>
       {loggedInState ? (
         <>
           <td>
             <button
+              data='delete-button'
               className="delete-button"
-              onClick={() => handleDelete(blogClone)}
-            > Delete
+              onClick={() => handleDelete(blog.id)}
+            >
+              Delete
             </button>
           </td>
           <td>
@@ -155,12 +155,19 @@ export const Row = ({ id, blog, handleUpdate, loggedInState, setMessage }) => {
               <button
                 className="edit-button"
                 onClick={() => (setStartEdit(true), setClone(blog))}
-              > Edit
+              >
+                Edit
               </button>
             )}
           </td>
           <td>
-            <button onClick={() => ( addLike(), setClone(blog))}>I Like This!</button>
+            <button
+              data='like-button'
+              className="like-button"
+              onClick={() => (addLike(), setClone(blog))}
+            >
+              I Like This!
+            </button>
           </td>
         </>
       ) : (
@@ -175,5 +182,5 @@ Row.propTypes = {
   blog: PropTypes.object.isRequired,
   handleUpdate: PropTypes.func.isRequired,
   loggedInState: PropTypes.bool.isRequired,
-  setMessage: PropTypes.func
+  setMessage: PropTypes.func,
 }

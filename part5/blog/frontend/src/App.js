@@ -85,10 +85,10 @@ function App() {
           {show ? (
             <section className="center-wrapper">
               <Input handleAdd={handleAdd} setMessage={setMessage} />
-              <ShowButton message={'Cancel'} handleClick={handleShow} />
+              <ShowButton message={'Cancel'} handleClick={handleShow} testData='cancel-add-new-blog-button' />
             </section>
           ) : (
-            <ShowButton message={'Add new blog'} handleClick={handleShow} />
+            <ShowButton message={'Add new blog'} handleClick={handleShow} testData='add-new-blog-button'/>
           )}
           <List
             setMessage={setMessage}

@@ -5,7 +5,7 @@ const ratingUrl = '/api/rating'
 
 let token = null
 
-export const setToken = async newToken => {
+export const setToken = async (newToken) => {
   token = await `bearer ${newToken}`
 }
 
@@ -14,7 +14,7 @@ export const getAll = async () => {
   return response.data
 }
 
-export const create = async newData => {
+export const create = async (newData) => {
   const config = {
     headers: { Authorization: token },
   }
@@ -32,23 +32,21 @@ export const remove = async (id) => {
   return response.data
 }
 
-export const update =  async (id, newData) => {
-
+export const update = async (id, newData) => {
   const config = {
     headers: { Authorization: token },
   }
 
-  const response = await  axios.put(`${serverUrl}/${id}`, newData, config)
+  const response = await axios.put(`${serverUrl}/${id}`, newData, config)
   return response.data
 }
 
-export const addLikes = async(id) => {
-
+export const addLikes = async (id) => {
   const config = {
     headers: { Authorization: token },
   }
 
-  const response = await axios.put(`${ratingUrl}/${id}`,[id], config)
+  const response = await axios.put(`${ratingUrl}/${id}`, [id], config)
   return response.data
 }
 

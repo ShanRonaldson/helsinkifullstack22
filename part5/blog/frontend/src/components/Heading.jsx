@@ -4,7 +4,7 @@ export const Heading = ({ message }) => {
 
 
   return(
-    <h1>
+    <h1 data='heading-h1'>
       {message}
     </h1>
   )

@@ -4,7 +4,7 @@ export const TableHeading = () => {
   return(
     <>
       <thead>
-        <tr>
+        <tr data='table-heading-row'>
           <th>Title</th>
           <th>Author</th>
           <th>URL Link</th>

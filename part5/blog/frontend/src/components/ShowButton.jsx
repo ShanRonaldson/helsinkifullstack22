@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
 
-export const ShowButton = ({ message, handleClick }) => {
+export const ShowButton = ({ message, handleClick, testData }) => {
 
   return(
     <>
-      <button onClick={() => handleClick()} className='center'>
+      <button onClick={() => handleClick()} className='center' data={testData}>
         {message}
       </button>
     </>
@@ -14,5 +14,6 @@ export const ShowButton = ({ message, handleClick }) => {
 
 ShowButton.propTypes = {
   message: PropTypes.string.isRequired,
-  handleClick: PropTypes.func.isRequired
+  handleClick: PropTypes.func.isRequired,
+  testData: PropTypes.string.isRequired
 }

@@ -6,7 +6,6 @@ export const Login = ({ handleCredentials, setLoginState, setMessage }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedAppUser')
     if (loggedUserJSON) {
@@ -22,27 +21,30 @@ export const Login = ({ handleCredentials, setLoginState, setMessage }) => {
 
     try {
       const user = await login({
-        username, password,
+        username,
+        password,
       })
       handleCredentials(user)
       setLoginState(true)
       setUsername('')
       setPassword('')
     } catch (exception) {
-      console.log( exception)
+      console.log(exception)
       setMessage({ content: 'Incorrect password or username', type: 'error' })
       setTimeout(() => {
         setMessage({})
       }, 5000)
-    }}
+    }
+  }
 
   return (
     <>
-      <h2>Login</h2>
+      <h2>Blog site login</h2>
 
       <form action="submit" onSubmit={(e) => handleLogin(e)}>
         <label htmlFor="username">Username</label>
         <input
+          data="username-input"
           type="text"
           name="username"
           id="username"
@@ -52,6 +54,7 @@ export const Login = ({ handleCredentials, setLoginState, setMessage }) => {
         />
         <label htmlFor="password">Password</label>
         <input
+          data="password-input"
           type="password"
           name="password"
           id="password"
@@ -59,7 +62,9 @@ export const Login = ({ handleCredentials, setLoginState, setMessage }) => {
           value={password}
           onChange={({ target }) => setPassword(target.value)}
         />
-        <button type="submit">Login</button>
+        <button type="submit" data="login-button">
+          Login
+        </button>
       </form>
     </>
   )
@@ -68,5 +73,5 @@ export const Login = ({ handleCredentials, setLoginState, setMessage }) => {
 Login.propTypes = {
   handleCredentials: PropTypes.func.isRequired,
   setLoginState: PropTypes.func.isRequired,
-  setMessage: PropTypes.func
+  setMessage: PropTypes.func,
 }
