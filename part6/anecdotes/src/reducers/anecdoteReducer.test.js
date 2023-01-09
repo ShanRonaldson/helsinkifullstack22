@@ -1,5 +1,5 @@
 import deepFreeze from "deep-freeze";
-import { initialState, reducer } from "./anecdoteReducer";
+import reducer, { initialState } from "./anecdoteReducer";
 
 describe("anecdote reducer", () => {
   test("should return a proper initial state when called with undefined state", () => {
@@ -15,19 +15,16 @@ describe("anecdote reducer", () => {
   test("returns new state with action add new", () => {
     const state = [];
     const action = {
-      type: "ADD_NEW",
-      data: {
-        content: "the app state is in redux store",
-        id: 1,
-        votes: 1,
-      },
+      type: "anecdotes/addNew",
+      payload:
+        "the app state is in redux store",
     };
 
     deepFreeze(state);
 
     const newState = reducer(state, action);
     expect(newState).toHaveLength(1);
-    expect(newState).toContainEqual(action.data);
+    expect(newState.map(s => s.data.content)).toContain(action.payload)
   });
 
   test("can vote on existing blog", () => {
@@ -37,16 +34,20 @@ describe("anecdote reducer", () => {
       { content: "something blue", id: 3, votes: 0 },
     ];
     const action = {
-      type: "VOTE",
-      data: { id: 3 },
+      type: "anecdotes/incrementVotes",
+      payload: { id: 3 },
     };
 
     deepFreeze(state);
     const newState = reducer(state, action);
+    expect(newState).toHaveLength(3)
+    expect(newState).toContainEqual(state[0])
+
+
     expect(newState).toEqual([
+      { content: "something blue", id: 3, votes: 1 },
       { content: "something old", id: 1, votes: 0 },
       { content: "something borrowed", id: 2, votes: 0 },
-      { content: "something blue", id: 3, votes: 1 },
     ]);
   });
 });
