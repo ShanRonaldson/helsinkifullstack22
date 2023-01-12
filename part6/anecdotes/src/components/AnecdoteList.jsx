@@ -4,7 +4,6 @@ import { Vote } from "./Vote";
 export const AnecdoteList = () => {
   const anecdotes = useSelector((state) => state.anecdotes);
 
-  console.log(anecdotes)
   return (
     <>
       <h2>Anecdotes</h2>

@@ -21,28 +21,25 @@ const sorted = (a, b) => {
 };
 
 const anecdoteSlice = createSlice({
-  name: 'anecdotes',
+  name: "anecdotes",
   initialState,
   reducers: {
     addNew(state, action) {
-      const content = action.payload
-      console.log(content)
-      const data = asObject(content)
-      console.log('data ', data)
-      state.push(data)
+      const content = action.payload;
+      const data = asObject(content);
+      state.push(data);
     },
     incrementVotes(state, action) {
-      const id = action.payload.id
+      const id = action.payload.id;
       const toChange = state.find((n) => n.id === id);
       const changed = {
         ...toChange,
         votes: toChange.votes + 1,
       };
       return state.map((val) => (val.id === id ? changed : val)).sort(sorted);
-    }
+    },
+  },
+});
 
-  }
-})
-
-export const { addNew, incrementVotes } = anecdoteSlice.actions
-export default anecdoteSlice.reducer
+export const { addNew, incrementVotes } = anecdoteSlice.actions;
+export default anecdoteSlice.reducer;
