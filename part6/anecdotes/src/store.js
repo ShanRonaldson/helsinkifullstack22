@@ -5,11 +5,11 @@ import notificationReducer from "./reducers/notificationReducer";
 import App from "./App";
 import { Notification } from "./components/Notification";
 
-const store = configureStore({
-  reducer: { anecdotes: anecdoteReducer, notifications: notificationReducer },
-});
-
 export const AnecdotesApp = () => {
+  const store = configureStore({
+    reducer: { anecdotes: anecdoteReducer, notifications: notificationReducer },
+  });
+
   return (
     <Provider store={store}>
       <Notification />

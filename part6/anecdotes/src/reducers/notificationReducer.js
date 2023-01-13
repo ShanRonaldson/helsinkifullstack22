@@ -8,7 +8,6 @@ const notifyReducer = createSlice({
   reducers: {
     notify(state, action) {
       const content = action.payload;
-      console.log("notification content ", content);
       state = content;
       return state;
     },
