@@ -13,3 +13,8 @@ export const create = async (content) => {
   const response = await axios.post(serverUrl, object);
   return response.data;
 };
+
+export const update = async (id, newData) => {
+  const response = await axios.put(`${serverUrl}/${id}`, newData);
+  return response.data;
+};

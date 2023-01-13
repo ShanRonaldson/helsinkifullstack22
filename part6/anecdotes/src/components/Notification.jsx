@@ -1,23 +1,18 @@
-import { useDispatch, useSelector } from "react-redux";
-import { hideAlert } from "../reducers/notificationReducer";
+import {  useSelector } from "react-redux";
 
 export const Notification = () => {
   const alert = useSelector((state) => state.notifications);
-
-  const dispatch = useDispatch();
-  setTimeout(() => {
-    dispatch(hideAlert());
-  }, 7000);
-
+  
   const style = {
     border: "solid",
     padding: 10,
+    margin: 20,
     borderWidth: 1,
-    position: "absolute",
+    position: "sticky",
     top: "40%",
-    left: "40%",
+    left: "20%",
+    right: "20%",
     zIndex: 2,
-    minWidth: "80px",
     backgroundColor: "white",
   };
 
