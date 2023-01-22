@@ -1,0 +1,226 @@
+import { ApolloServer } from "@apollo/server";
+import { startStandaloneServer } from "@apollo/server/standalone";
+import { v4 as uuidv4 } from "uuid";
+import { GraphQLError } from "graphql";
+
+let authors = [
+  {
+    name: "Robert Martin",
+    id: "afa51ab0-344d-11e9-a414-719c6709cf3e",
+    born: 1952,
+  },
+  {
+    name: "Martin Fowler",
+    id: "afa5b6f0-344d-11e9-a414-719c6709cf3e",
+    born: 1963,
+  },
+  {
+    name: "Fyodor Dostoevsky",
+    id: "afa5b6f1-344d-11e9-a414-719c6709cf3e",
+    born: 1821,
+  },
+  {
+    name: "Joshua Kerievsky", // birthyear not known
+    id: "afa5b6f2-344d-11e9-a414-719c6709cf3e",
+  },
+  {
+    name: "Sandi Metz", // birthyear not known
+    id: "afa5b6f3-344d-11e9-a414-719c6709cf3e",
+  },
+];
+
+/*
+ * Suomi:
+ * Saattaisi olla järkevämpää assosioida kirja ja sen tekijä tallettamalla kirjan yhteyteen tekijän nimen sijaan tekijän id
+ * Yksinkertaisuuden vuoksi tallennamme kuitenkin kirjan yhteyteen tekijän nimen
+ *
+ * English:
+ * It might make more sense to associate a book with its author by storing the author's id in the context of the book instead of the author's name
+ * However, for simplicity, we will store the author's name in connection with the book
+ *
+ * Spanish:
+ * Podría tener más sentido asociar un libro con su autor almacenando la id del autor en el contexto del libro en lugar del nombre del autor
+ * Sin embargo, por simplicidad, almacenaremos el nombre del autor en conección con el libro
+ */
+
+let books = [
+  {
+    title: "Clean Code",
+    published: 2008,
+    author: "Robert Martin",
+    id: "afa5b6f4-344d-11e9-a414-719c6709cf3e",
+    genres: ["refactoring"],
+  },
+  {
+    title: "Agile software development",
+    published: 2002,
+    author: "Robert Martin",
+    id: "afa5b6f5-344d-11e9-a414-719c6709cf3e",
+    genres: ["agile", "patterns", "design"],
+  },
+  {
+    title: "Refactoring, edition 2",
+    published: 2018,
+    author: "Martin Fowler",
+    id: "afa5de00-344d-11e9-a414-719c6709cf3e",
+    genres: ["refactoring"],
+  },
+  {
+    title: "Refactoring to patterns",
+    published: 2008,
+    author: "Joshua Kerievsky",
+    id: "afa5de01-344d-11e9-a414-719c6709cf3e",
+    genres: ["refactoring", "patterns"],
+  },
+  {
+    title: "Practical Object-Oriented Design, An Agile Primer Using Ruby",
+    published: 2012,
+    author: "Sandi Metz",
+    id: "afa5de02-344d-11e9-a414-719c6709cf3e",
+    genres: ["refactoring", "design"],
+  },
+  {
+    title: "Crime and punishment",
+    published: 1866,
+    author: "Fyodor Dostoevsky",
+    id: "afa5de03-344d-11e9-a414-719c6709cf3e",
+    genres: ["classic", "crime"],
+  },
+  {
+    title: "The Demon ",
+    published: 1872,
+    author: "Fyodor Dostoevsky",
+    id: "afa5de04-344d-11e9-a414-719c6709cf3e",
+    genres: ["classic", "revolution"],
+  },
+];
+
+const typeDefs = `#graphql
+
+    type Author{
+        name: String!
+        born: Int
+        id: ID!
+        bookCount: Int
+        books: [Book!]
+    }
+
+    type Book{
+        title: String!
+        published: Int!
+        author: Author!
+        genres: [String]
+        id: ID!
+    }
+
+    type Query {
+        authorCount: Int!
+        bookCount: Int!
+        allAuthors: [Author!]!
+        allBooks(author: String, genre: String): [Book!]!
+    }
+
+    type Mutation {
+        addBook(
+            title: String!
+            published: Int!
+            author: String!
+            genres: [String]
+            ): Book
+        editBorn(
+            name: String!
+            setBornTo: Int!
+            ) : Author
+    }
+`;
+
+const resolvers = {
+  Query: {
+    authorCount: () => authors.length,
+    bookCount: () => books.length,
+    allAuthors: () => authors,
+    allBooks: (root, args) => {
+      if (!args.author && !args.genre) {
+        return books;
+      } else {
+        if (args.author && !args.genre) {
+          return books.filter((book) => book.author === args.author);
+        } else if (!args.author && args.genre) {
+          const byGenre = [];
+          books.map((book) => {
+            if (book.genres.includes(args.genre)) {
+              byGenre.push(book);
+            }
+          });
+          return byGenre;
+        } else {
+          const byGenre = [];
+          const filtered = books.filter((book) => book.author === args.author);
+          filtered.map((book) => {
+            if (book.genres.includes(args.genre)) {
+              byGenre.push(book);
+            }
+          });
+          return byGenre;
+        }
+      }
+    },
+  },
+  Author: {
+    name: (root) => root.name,
+    born: (root) => root.born,
+    id: (root) => root.id,
+    bookCount: (parent) => {
+      const list = books.filter((book) => book.author === parent.name);
+      return list.length;
+    },
+    books: (parent) => {
+      return books.filter((book) => book.author === parent.name);
+    },
+  },
+  Book: {
+    title: (root) => root.title,
+    published: (root) => root.published,
+    author: (root) => {
+      return {
+        name: root.author,
+      };
+    },
+    genres: (root) => root.genres,
+    id: (root) => root.id,
+  },
+  Mutation: {
+    addBook: (root, args) => {
+      const exists = authors.find((author) => author.name === args.author);
+      if (exists) {
+        const book = { ...args, id: uuidv4() };
+        books = books.concat(book);
+        return book;
+      } else {
+        const book = { ...args, id: uuidv4() };
+        books = books.concat(book);
+        const addedAuthor = { name: args.author, id: uuidv4() };
+        authors = authors.concat(addedAuthor);
+        return book;
+      }
+    },
+    editBorn: (root, args) => {
+      const update = authors.find((author) => author.name === args.name);
+      if (!update) {
+        return null;
+      } else {
+        const updated = { ...update, born: args.setBornTo };
+        authors = authors.map((a) => (a.name === args.name ? updated : a));
+        return updated;
+      }
+    },
+  },
+};
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+});
+
+const { url } = await startStandaloneServer(server);
+console.log(`🚀 Server ready at ${url}`);
