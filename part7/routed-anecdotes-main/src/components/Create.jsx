@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const CreateNew = (props) => {
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
   const [info, setInfo] = useState("");
+
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -13,6 +16,8 @@ export const CreateNew = (props) => {
       info,
       votes: 0,
     });
+
+    navigate("/anecdotes");
   };
 
   return (
@@ -20,7 +25,7 @@ export const CreateNew = (props) => {
       <h2>create a new anecdote</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          content
+          <label htmlFor="content">content</label>
           <input
             name="content"
             value={content}
@@ -28,7 +33,7 @@ export const CreateNew = (props) => {
           />
         </div>
         <div>
-          author
+          <label htmlFor="author">author</label>
           <input
             name="author"
             value={author}
@@ -36,7 +41,7 @@ export const CreateNew = (props) => {
           />
         </div>
         <div>
-          url for more info
+          <label htmlFor="info">url for more info</label>
           <input
             name="info"
             value={info}

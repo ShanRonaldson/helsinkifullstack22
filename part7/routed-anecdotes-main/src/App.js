@@ -54,20 +54,16 @@ const App = () => {
 
   return (
     <Router>
-
       <div>
         <h1>Software anecdotes</h1>
         <Menu />
       </div>
-
       <Routes>
         <Route path='/anecdotes' element={<AnecdoteList anecdotes={anecdotes} />} />
         <Route path='/' element={<About />} />
         <Route path='/create' element={<CreateNew addNew={addNew} />} />
         <Route path="/anecdotes/:id" element={<Anecdote anecdotes={anecdotes} />} />
-
       </Routes>
-
       <Footer />
     </Router>
 
