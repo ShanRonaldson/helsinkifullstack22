@@ -36,7 +36,7 @@ export const CreateNew = (props) => {
           url for more info:
           <input type="text" name="info" {...info} />
         </div>
-        <button>create</button>
+        <button type="submit">create</button>
       </form>
     </div>
   );
