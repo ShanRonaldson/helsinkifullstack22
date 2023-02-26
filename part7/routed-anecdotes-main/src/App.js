@@ -7,6 +7,7 @@ import {
 
 import { Menu } from './components/Menu'
 import { AnecdoteList } from './components/List'
+import { Anecdote } from './components/Anecdote'
 import { About } from './components/About'
 import { CreateNew } from './components/Create'
 import { Footer } from './components/Footer'
@@ -60,9 +61,11 @@ const App = () => {
       </div>
 
       <Routes>
-        <Route path='/' element={<AnecdoteList anecdotes={anecdotes} />} />
-        <Route path='/about' element={<About />} />
+        <Route path='/anecdotes' element={<AnecdoteList anecdotes={anecdotes} />} />
+        <Route path='/' element={<About />} />
         <Route path='/create' element={<CreateNew addNew={addNew} />} />
+        <Route path="/anecdotes/:id" element={<Anecdote anecdotes={anecdotes} />} />
+
       </Routes>
 
       <Footer />
